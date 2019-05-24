@@ -5,12 +5,10 @@
  */
 package ua.edu.chmnu.fks.oop.lb04;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+
 import static org.junit.Assert.*;
+import static ua.edu.chmnu.fks.oop.lb04.ArrayUtils.reverse;
 
 /**
  *
@@ -75,5 +73,21 @@ public class ArrayUtilsTest {
         double m = -11;
         double r = ArrayUtils.maxAbs(a);
         assertEquals(m, r);
+    }
+
+    @Test
+    public void reverseArrayUtilTest01() {
+        int[] originalArray = {106,187,146,44,144,153,129,216,87,206,97,213,165};
+        int[] expectedReverseArray = {165,213,97,206,87,216,129,153,144,44,146,187,106};
+        reverse(originalArray);
+        Assert.assertArrayEquals(expectedReverseArray, originalArray);
+    }
+
+    @Test
+    public void reverseArrayUtilTest02() {
+        int[] originalArray = {-50,-1,25,-30,-7,-9,-37,30,-85,56,33,-102,-1,-122,3,-131,19,-8,-95,-116};
+        int[] expectedReverseArray = {-116,-95,-8,19,-131,3,-122,-1,-102,33,56,-85,30,-37,-9,-7,-30,25,-1,-50};
+        reverse(originalArray);
+        Assert.assertArrayEquals(expectedReverseArray, originalArray);
     }
 }
