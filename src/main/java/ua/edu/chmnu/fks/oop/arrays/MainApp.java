@@ -1,4 +1,4 @@
-package ua.edu.chmnu.fks.oop;
+package ua.edu.chmnu.fks.oop.arrays;
 
 import java.util.Random;
 import java.util.Scanner;

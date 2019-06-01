@@ -11,7 +11,6 @@ public class CesarCipher {
 
     public static String encode(String src, int offset) {
         char[] array = src.toCharArray();
-        int len = 52;
         for (int i = 0; i < array.length; ++i) {
             if (array[i] >= 'A' && array[i] <= 'Z') {
                 array[i] = encodeChar(array[i], 'A', offset);
