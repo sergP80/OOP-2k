@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.edu.chmnu.fks.oop.lb04;
+package ua.edu.chmnu.fks.oop.arrays;
 
 import java.util.Random;
 

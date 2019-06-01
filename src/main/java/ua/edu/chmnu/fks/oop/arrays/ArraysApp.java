@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.edu.chmnu.fks.oop.lb04;
+package ua.edu.chmnu.fks.oop.arrays;
 
 /**
  *
  * @author svpuzyrov
  */
-public class MethodExample {
+public class ArraysApp {
      public static void main(String[] args) {
          int[] a = {-1, 2, 5, -7};
          int m = ArrayUtils.maxAbs(a);

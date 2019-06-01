@@ -24,7 +24,7 @@ public class PersonTest {
         Person person = new Person();
         LocalDate date = LocalDate.of(year, month, day);
         LocalDate now = LocalDate.now();
-        long expectedYears = YEARS.between(now, date);
+        long expectedYears = YEARS.between(date, now);
         person.setBirthDate(date);
         assertEquals(expectedYears, person.age());
     }
