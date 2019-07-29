@@ -1,9 +1,11 @@
-package ua.edu.chmnu.fks.oop;
+package ua.edu.chmnu.fks.oop.arrays;
 
 import java.util.Random;
 import java.util.Scanner;
+import static ua.edu.chmnu.fks.oop.arrays.ArrayUtils.createArray;
+import static ua.edu.chmnu.fks.oop.arrays.ArrayUtils.printArray;
+import static ua.edu.chmnu.fks.oop.arrays.ArrayUtils.reverse;
 
-import static ua.edu.chmnu.fks.oop.lb04.ArrayUtils.*;
 
 public class MainApp {
 

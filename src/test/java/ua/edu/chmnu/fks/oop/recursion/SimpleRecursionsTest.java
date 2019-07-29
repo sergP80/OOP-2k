@@ -6,9 +6,8 @@ import junitparams.Parameters;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ua.edu.chmnu.fks.oop.lb04.ArrayUtils;
+import ua.edu.chmnu.fks.oop.arrays.ArrayUtils;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
 
