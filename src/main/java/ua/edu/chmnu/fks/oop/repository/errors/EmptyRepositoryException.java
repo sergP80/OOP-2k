@@ -1,4 +1,4 @@
-package ua.edu.chmnu.fks.oop.repository;
+package ua.edu.chmnu.fks.oop.repository.errors;
 
 public class EmptyRepositoryException extends RuntimeException {
     public EmptyRepositoryException() {

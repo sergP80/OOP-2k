@@ -1,5 +1,8 @@
 package ua.edu.chmnu.fks.oop.repository;
 
+import ua.edu.chmnu.fks.oop.repository.errors.EmptyRepositoryException;
+import ua.edu.chmnu.fks.oop.repository.errors.Errors;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ public interface Repository<T> extends Closeable {
 
     default List<T> read(int limit, Predicate<T> filter) throws RuntimeException {
         if (limit <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(String.format(Errors.ERR_INVALID_LIMIT, limit));
         }
 
         List<T> list = new ArrayList<>();

@@ -4,7 +4,7 @@ import lombok.Getter;
 import ua.edu.chmnu.fks.oop.design.persons.errors.PersonException;
 import ua.edu.chmnu.fks.oop.design.persons.model.Person;
 import ua.edu.chmnu.fks.oop.design.persons.repository.PersonRepository;
-import ua.edu.chmnu.fks.oop.repository.EmptyRepositoryException;
+import ua.edu.chmnu.fks.oop.repository.errors.EmptyRepositoryException;
 
 import java.io.*;
 import java.util.ArrayList;
