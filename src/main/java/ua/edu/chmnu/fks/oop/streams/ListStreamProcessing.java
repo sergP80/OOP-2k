@@ -8,6 +8,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ListStreamProcessing {
+    public static final char SHADOW_CHAR = '\u2593';
+
     public static void main(String[] args) {
 
         List<String> list = Arrays.asList(
@@ -74,7 +76,7 @@ public class ListStreamProcessing {
         charFrequencies.forEach((c, count) -> {
             System.out.print(c + ": ");
             for (int i = 0; i < count; ++i) {
-                System.out.print('\u2593');
+                System.out.print(SHADOW_CHAR);
             }
             System.out.println();
         });

@@ -11,4 +11,5 @@ import lombok.*;
 public class City {
     private String name;
     private Integer population;
+    private Double square;
 }

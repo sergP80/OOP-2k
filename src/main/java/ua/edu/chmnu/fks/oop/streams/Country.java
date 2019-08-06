@@ -12,5 +12,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class Country {
     private String name;
+
+    @EqualsAndHashCode.Exclude
     private List<City> cities;
 }
