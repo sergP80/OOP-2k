@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Sample1 {
+public class ListStreamProcessing {
     public static void main(String[] args) {
 
         List<String> list = Arrays.asList(
@@ -45,17 +45,38 @@ public class Sample1 {
 
         String text = list.stream()
                 .filter(s -> Objects.nonNull(s) && !s.trim().isEmpty())
-                .collect(Collectors.joining(""));
-        Map<String, Long> wordFrequency = Arrays.stream(text.split("[\\s\\.!\\?]+"))
+                .collect(Collectors.joining("\n"));
+        Map<String, Long> wordFrequency = Arrays.stream(text.split("[\\s\\.!\\?\n]+"))
                 .filter(s -> Objects.nonNull(s) && !s.trim().isEmpty())
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         System.out.println(wordFrequency);
 
         System.out.println("================ Frequencies of words #2 ================");
 
-        Map<String, Integer> wordFrequency2 = Arrays.stream(text.split("[\\s\\.!\\?]+"))
+        Map<String, Integer> wordFrequency2 = Arrays.stream(text.split("[\\s\\.!\\?\n]+"))
                 .filter(s -> Objects.nonNull(s) && !s.trim().isEmpty())
                 .collect(Collectors.toMap(w -> w, w-> 1, Integer::sum));
         System.out.println(wordFrequency2);
+
+        System.out.println("================ Frequencies of char ================");
+
+        Map<Character, Integer> charFrequencies = list.stream()
+                .filter(Objects::nonNull)
+                .flatMapToInt(CharSequence::chars)
+                .filter(Character::isAlphabetic)
+                .sorted()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toMap(c -> c, c -> 1, Integer::sum));
+        System.out.println(charFrequencies);
+
+        System.out.println("================ Frequencies of char histogram ================");
+
+        charFrequencies.forEach((c, count) -> {
+            System.out.print(c + ": ");
+            for (int i = 0; i < count; ++i) {
+                System.out.print('\u2593');
+            }
+            System.out.println();
+        });
     }
 }
