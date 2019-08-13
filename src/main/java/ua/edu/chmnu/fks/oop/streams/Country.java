@@ -15,4 +15,12 @@ public class Country {
 
     @EqualsAndHashCode.Exclude
     private List<City> cities;
+
+    public double totalSquare() {
+        return cities.stream().mapToDouble(City::getSquare).sum();
+    }
+
+    public CityStatistic statistic() {
+        return cities.stream().collect(CityStatisticCollector.create());
+    }
 }

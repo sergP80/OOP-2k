@@ -89,5 +89,12 @@ public class CountryProcessing {
             }
             System.out.println(String.format(" %.2f", density));
         });
+
+        CityStatistic cityStatistic = countryList.stream()
+                .flatMap(c -> c.getCities().stream())
+                .collect(CityStatisticCollector.create());
+        System.out.println("===========================================================");
+        System.out.println(cityStatistic);
+        System.out.println("===========================================================");
     }
 }
