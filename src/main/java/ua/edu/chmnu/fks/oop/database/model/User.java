@@ -29,6 +29,7 @@ public class User {
 
     private String address;
 
+    @ToString.Exclude
     private Set<Post> posts = new HashSet<>();
 
     public int age() {

@@ -17,11 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DbApp {
-    private static String host = "localhost";
+    private static String host = "192.168.0.106";
     private static Integer port = 5433;
-    private static String user = "";
-    private static String password = "";
-    private static String database = "courses.social_net";
+    private static String user = "user1";
+    private static String password = "password123";
+    private static String database = "courses";
 
     public static void main(String[] args) {
 
@@ -36,6 +36,9 @@ public class DbApp {
         try(Connection connection = ConnectionFactory.createConnection(connectionConfig)) {
             UserDao userDao = AppConfiguration.getUserDao(connection);
             PostDao postDao = AppConfiguration.getPostDao(connection);
+
+            int r = userDao.deleteAll();
+            System.out.println("Deleted " + r + " users");
             User user = User.builder()
                          .email("user1@domain.com")
                          .phone("+380913424512")
@@ -43,7 +46,7 @@ public class DbApp {
                          .address("Soborna 1, Nikolayev")
                          .build();
             user = userDao.create(user);
-            System.out.printf("Inserted user " + user);
+            System.out.println("Inserted user " + user);
             List<Post> posts = Arrays.asList(
               Post
               .builder()
@@ -60,7 +63,7 @@ public class DbApp {
                 .build()
             );
 
-            posts.forEach(postDao::create);
+            posts.stream().map(postDao::create).forEach(System.out::println);
         } catch (SQLException e) {
             e.printStackTrace();
         }

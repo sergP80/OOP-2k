@@ -20,8 +20,8 @@ public class PostMapper implements Converter<ResultSet, Post>{
                     .id(rowSet.getLong("post_id"))
                     .title(rowSet.getString("post_title"))
                     .content(rowSet.getString("post_content"))
-                    .createdTime(localDateTimeMapper.convertFrom(rowSet.getLong("post_created_time")))
-                    .updatedTime(localDateTimeMapper.convertFrom(rowSet.getLong("post_updated_time")))
+                    .createdTime(localDateTimeMapper.convertFrom(rowSet.getTimestamp("post_created_time")))
+                    .updatedTime(localDateTimeMapper.convertFrom(rowSet.getTimestamp("post_updated_time")))
                     .build();
         } catch (SQLException e) {
             throw new RuntimeException(e);

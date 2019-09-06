@@ -28,7 +28,7 @@ public class UserMapper implements Converter<ResultSet, User> {
                     .email(rowSet.getString("user_email"))
                     .phone(rowSet.getString("user_phone"))
                     .address(rowSet.getString("user_address"))
-                    .birthDay(localDateMapper.convertFrom(rowSet.getLong("user_birth_day")))
+                    .birthDay(localDateMapper.convertFrom(rowSet.getTimestamp("user_birth_day")))
                     .build();
         } catch (SQLException e) {
             throw new RuntimeException(e);

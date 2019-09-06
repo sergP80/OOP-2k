@@ -7,10 +7,7 @@ import ua.edu.chmnu.fks.oop.database.mapper.PostMapper;
 import ua.edu.chmnu.fks.oop.database.model.Post;
 import ua.edu.chmnu.fks.oop.database.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,12 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
 
     @Override
     public String tableName() {
-        return "courses.posts";
+        return "social_net.posts";
+    }
+
+    @Override
+    public Connection connection() {
+        return this.connection;
     }
 
     @Override
@@ -38,11 +40,11 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
                                    "VALUES(?, ?, ?, ?, ?)",
                                    tableName()
         );
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try(PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getContent());
-            statement.setLong(3, dateTimeMapper.convertTo(LocalDateTime.now()));
-            statement.setLong(4, dateTimeMapper.convertTo(LocalDateTime.now()));
+            statement.setTimestamp(3, dateTimeMapper.convertTo(LocalDateTime.now()));
+            statement.setTimestamp(4, dateTimeMapper.convertTo(LocalDateTime.now()));
             statement.setLong(5, Optional.ofNullable(post.getUser()).map(User::getId).orElse(null));
             int result = statement.executeUpdate();
             if (result != 1) {
@@ -70,7 +72,7 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getContent());
-            statement.setLong(3, dateTimeMapper.convertTo(LocalDateTime.now()));
+            statement.setTimestamp(3, dateTimeMapper.convertTo(LocalDateTime.now()));
             statement.setLong(4, post.getId());
             int result = statement.executeUpdate();
             if (result != 1) {

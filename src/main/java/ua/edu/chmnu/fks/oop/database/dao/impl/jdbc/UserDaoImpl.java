@@ -7,10 +7,7 @@ import ua.edu.chmnu.fks.oop.database.mapper.LocalDateTimeMapper;
 import ua.edu.chmnu.fks.oop.database.mapper.UserMapper;
 import ua.edu.chmnu.fks.oop.database.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +26,12 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
     @Override
     public String tableName() {
-        return "courses.users";
+        return "social_net.users";
+    }
+
+    @Override
+    public Connection connection() {
+        return this.connection;
     }
 
     @Override
@@ -38,10 +40,10 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
                                    "VALUES(?, ?, ?, ?)",
                                    tableName()
         );
-        try(PreparedStatement statement = connection.prepareStatement(sql)) {
+        try(PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPhone());
-            statement.setLong(3, dateMapper.convertTo(user.getBirthDay()));
+            statement.setTimestamp(3, dateMapper.convertTo(user.getBirthDay()));
             statement.setString(4, user.getAddress());
             int result = statement.executeUpdate();
             if (result != 1) {
@@ -69,7 +71,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPhone());
-            statement.setLong(3, dateMapper.convertTo(user.getBirthDay()));
+            statement.setTimestamp(3, dateMapper.convertTo(user.getBirthDay()));
             statement.setString(4, user.getAddress());
             statement.setLong(5, user.getId());
             int result = statement.executeUpdate();

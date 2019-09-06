@@ -6,15 +6,15 @@ import java.sql.Timestamp;
 import java.time.*;
 
 @NoArgsConstructor
-public class LocalDateMapper implements Converter<Long, LocalDate> {
+public class LocalDateMapper implements Converter<Timestamp, LocalDate> {
 
     @Override
-    public LocalDate convertFrom(Long timeStamp) {
-        return new Timestamp(timeStamp).toLocalDateTime().toLocalDate();
+    public LocalDate convertFrom(Timestamp timeStamp) {
+        return timeStamp.toLocalDateTime().toLocalDate();
     }
 
     @Override
-    public Long convertTo(LocalDate localDate) {
-        return Timestamp.valueOf(localDate.atStartOfDay()).getTime();
+    public Timestamp convertTo(LocalDate localDate) {
+        return Timestamp.valueOf(localDate.atStartOfDay());
     }
 }

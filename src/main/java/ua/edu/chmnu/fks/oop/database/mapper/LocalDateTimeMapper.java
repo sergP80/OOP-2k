@@ -1,24 +1,27 @@
 package ua.edu.chmnu.fks.oop.database.mapper;
 
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.time.*;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
-public class LocalDateTimeMapper implements Converter<Long, LocalDateTime> {
+public class LocalDateTimeMapper implements Converter<Timestamp, LocalDateTime> {
 
     @Override
-    public LocalDateTime convertFrom(Long timeStamp) {
-        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(timeStamp), ZoneId.systemDefault()).toLocalDateTime();
+    public LocalDateTime convertFrom(Timestamp timeStamp) {
+        return timeStamp.toLocalDateTime();
     }
 
     @Override
-    public Long convertTo(LocalDateTime localDateTime) {
+    public Timestamp convertTo(LocalDateTime localDateTime) {
         if (Objects.isNull(localDateTime)) {
             return null;
         }
-        return ZonedDateTime.of(localDateTime, ZoneId.systemDefault()).toInstant().toEpochMilli();
+        return Timestamp.valueOf(localDateTime);
     }
 }
