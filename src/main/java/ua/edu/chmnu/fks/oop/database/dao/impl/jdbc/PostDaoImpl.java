@@ -1,9 +1,11 @@
 package ua.edu.chmnu.fks.oop.database.dao.impl.jdbc;
 
 import ua.edu.chmnu.fks.oop.database.dao.PostDao;
+import ua.edu.chmnu.fks.oop.database.dao.UserDao;
 import ua.edu.chmnu.fks.oop.database.exceptions.DaoException;
 import ua.edu.chmnu.fks.oop.database.mapper.LocalDateTimeMapper;
 import ua.edu.chmnu.fks.oop.database.mapper.PostMapper;
+import ua.edu.chmnu.fks.oop.database.mapper.builders.sql.PostPreparedSqlBuilder;
 import ua.edu.chmnu.fks.oop.database.model.Post;
 import ua.edu.chmnu.fks.oop.database.model.User;
 
@@ -26,7 +28,7 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
 
     @Override
     public String tableName() {
-        return "social_net.posts";
+        return TABLE_NAME;
     }
 
     @Override
@@ -36,10 +38,7 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
 
     @Override
     public Post create(Post post) throws DaoException {
-        String sql = String.format("INSERT into %s (title, content, created_time, updated_time, user_id) " +
-                                   "VALUES(?, ?, ?, ?, ?)",
-                                   tableName()
-        );
+        String sql = PostPreparedSqlBuilder.create(post, tableName(), UserDao.TABLE_NAME).buildInsert();
         try(PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getContent());
@@ -65,10 +64,7 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
 
     @Override
     public Post update(Post post) throws DaoException {
-        String sql = String.format("UPDATE %s set title=?, content=?, updated_time=?) " +
-                                  "WHERE id=?",
-                                  tableName()
-        );
+        String sql = PostPreparedSqlBuilder.create(post, TABLE_NAME, UserDao.TABLE_NAME).buildUpdate();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getContent());
@@ -101,9 +97,7 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
 
     @Override
     public Post read(Long id) throws RuntimeException {
-        String sql = String.format("SELECT id as post_id, title as post_title, content as post_content,  created_time as post_created_time, updated_time as post_updated_time FROM %s " +
-                        "WHERE id=? LIMIT 1", tableName()
-        );
+        String sql = PostPreparedSqlBuilder.create(null, TABLE_NAME, UserDao.TABLE_NAME).buildSelectById();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             try(ResultSet result = statement.executeQuery()) {
@@ -119,9 +113,8 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
 
     @Override
     public List<Post> read(int page, int size) throws DaoException {
-        String sql = String.format("SELECT id as user_id, title as post_title, content as post_content,  created_time as post_created_time, updated_time as post_updated_time FROM %s " +
-                                    "LIMIT=? OFFSET=?", tableName()
-        );
+        page = page > 0 ? page - 1 : 0;
+        String sql = PostPreparedSqlBuilder.create(null, TABLE_NAME, UserDao.TABLE_NAME).buildPageSelect();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, page);
             statement.setLong(2, size);
@@ -139,9 +132,7 @@ public class PostDaoImpl extends GenericDaoImpl<Post, Long> implements PostDao {
 
     @Override
     public List<Post> readAll() throws DaoException {
-        String sql = String.format("SELECT id as post_id, title as post_title, content as post_content,  created_time as post_created_time, updated_time as post_updated_time FROM %s",
-                                    tableName()
-        );
+        String sql = PostPreparedSqlBuilder.create(null, TABLE_NAME, UserDao.TABLE_NAME).buildSelectAll();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             try(ResultSet result = statement.executeQuery()) {
                 List<Post> listResult = new ArrayList<>();

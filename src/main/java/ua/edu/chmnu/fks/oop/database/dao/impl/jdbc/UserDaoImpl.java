@@ -5,6 +5,7 @@ import ua.edu.chmnu.fks.oop.database.exceptions.DaoException;
 import ua.edu.chmnu.fks.oop.database.mapper.LocalDateMapper;
 import ua.edu.chmnu.fks.oop.database.mapper.LocalDateTimeMapper;
 import ua.edu.chmnu.fks.oop.database.mapper.UserMapper;
+import ua.edu.chmnu.fks.oop.database.mapper.builders.sql.UserPreparedSqlBuilder;
 import ua.edu.chmnu.fks.oop.database.model.User;
 
 import java.sql.*;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
+
     private final Connection connection;
     private final UserMapper userMapper;
     private final LocalDateTimeMapper dateTimeMapper;
@@ -26,7 +28,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
     @Override
     public String tableName() {
-        return "social_net.users";
+        return TABLE_NAME;
     }
 
     @Override
@@ -36,10 +38,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
     @Override
     public User create(User user) throws DaoException {
-        String sql = String.format("INSERT into %s (email, phone, birth_day, address) " +
-                                   "VALUES(?, ?, ?, ?)",
-                                   tableName()
-        );
+        String sql = UserPreparedSqlBuilder.create(user, TABLE_NAME).buildInsert();
         try(PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPhone());
@@ -64,10 +63,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
     @Override
     public User update(User user) throws DaoException {
-        String sql = String.format("UPDATE %s set email=?, phone=?, birth_day=?, address=?) " +
-                                  "WHERE id=?",
-                                  tableName()
-        );
+        String sql = UserPreparedSqlBuilder.create(user, TABLE_NAME).buildUpdate();
+
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPhone());
@@ -101,9 +98,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
     @Override
     public User read(Long id) throws RuntimeException {
-        String sql = String.format("SELECT id as user_id, title as post_title, content as post_content,  created_time as post_created_time, updated_time as post_updated_time FROM %s " +
-                        "WHERE id=? LIMIT 1", tableName()
-        );
+        String sql = UserPreparedSqlBuilder.create(null, TABLE_NAME).buildSelectById();
         try(PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             try(ResultSet result = statement.executeQuery()) {
@@ -119,9 +114,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
     @Override
     public List<User> read(int page, int size) throws DaoException {
-        String sql = String.format("SELECT id as user_id, title as post_title, content as post_content,  created_time as post_created_time, updated_time as post_updated_time FROM %s " +
-                                    "LIMIT=? OFFSET=?", tableName()
-        );
+        page = page > 0 ? page - 1 : 0;
+        String sql = UserPreparedSqlBuilder.create(null, TABLE_NAME).buildPageSelect();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setLong(1, page);
@@ -140,9 +134,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
     @Override
     public List<User> readAll() throws DaoException {
-        String sql = String.format("SELECT id as user_id, title as post_title, content as post_content,  created_time as post_created_time, updated_time as post_updated_time FROM %s ",
-                                    tableName()
-        );
+        String sql = UserPreparedSqlBuilder.create(null, TABLE_NAME).buildSelectAll();
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             try(ResultSet result = statement.executeQuery()) {

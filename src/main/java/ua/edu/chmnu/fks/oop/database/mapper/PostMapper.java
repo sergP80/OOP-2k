@@ -8,9 +8,11 @@ import java.sql.SQLException;
 public class PostMapper implements Converter<ResultSet, Post>{
 
     private final LocalDateTimeMapper localDateTimeMapper;
+    private final UserMapper userMapper;
 
-    public PostMapper(LocalDateTimeMapper localDateTimeMapper) {
+    public PostMapper(LocalDateTimeMapper localDateTimeMapper, UserMapper userMapper) {
         this.localDateTimeMapper = localDateTimeMapper;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -22,6 +24,7 @@ public class PostMapper implements Converter<ResultSet, Post>{
                     .content(rowSet.getString("post_content"))
                     .createdTime(localDateTimeMapper.convertFrom(rowSet.getTimestamp("post_created_time")))
                     .updatedTime(localDateTimeMapper.convertFrom(rowSet.getTimestamp("post_updated_time")))
+                    .user(userMapper.convertFrom(rowSet))
                     .build();
         } catch (SQLException e) {
             throw new RuntimeException(e);

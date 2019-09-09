@@ -20,8 +20,8 @@ public class AppConfiguration {
     static {
         localDateTimeMapper = new LocalDateTimeMapper();
         localDateMapper = new LocalDateMapper();
-        postMapper = new PostMapper(localDateTimeMapper);
         userMapper = new UserMapper(localDateTimeMapper, localDateMapper);
+        postMapper = new PostMapper(localDateTimeMapper, userMapper);
     }
     public static LocalDateTimeMapper localDateTimeMapper() {
         return localDateTimeMapper;

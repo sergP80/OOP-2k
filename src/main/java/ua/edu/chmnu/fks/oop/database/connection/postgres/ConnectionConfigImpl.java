@@ -10,16 +10,14 @@ import ua.edu.chmnu.fks.oop.database.connection.ConnectionConfig;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostgresConnectionConfig implements ConnectionConfig {
-    private String host;
-    private int port;
+public class ConnectionConfigImpl implements ConnectionConfig {
+    private String url;
     private String user;
     private String password;
-    private String database;
 
     @Override
     public String jdbcUrl() {
-        return String.format("jdbc:postgresql://%s:%d/%s", host, port, database);
+        return this.url;
     }
 
     @Override

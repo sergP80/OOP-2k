@@ -3,7 +3,7 @@ package ua.edu.chmnu.fks.oop.database;
 import ua.edu.chmnu.fks.oop.database.config.AppConfiguration;
 import ua.edu.chmnu.fks.oop.database.connection.ConnectionConfig;
 import ua.edu.chmnu.fks.oop.database.connection.ConnectionFactory;
-import ua.edu.chmnu.fks.oop.database.connection.postgres.PostgresConnectionConfig;
+import ua.edu.chmnu.fks.oop.database.connection.postgres.ConnectionConfigImpl;
 import ua.edu.chmnu.fks.oop.database.dao.PostDao;
 import ua.edu.chmnu.fks.oop.database.dao.UserDao;
 import ua.edu.chmnu.fks.oop.database.model.Post;
@@ -12,28 +12,15 @@ import ua.edu.chmnu.fks.oop.database.model.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class DbApp {
-    private static String host = "192.168.0.106";
-    private static Integer port = 5433;
-    private static String user = "user1";
-    private static String password = "password123";
-    private static String database = "courses";
 
     public static void main(String[] args) {
 
-        ConnectionConfig connectionConfig = PostgresConnectionConfig.builder()
-                .host(host)
-                .port(port)
-                .user(user)
-                .password(password)
-                .database(database)
-                .build();
-
-        try(Connection connection = ConnectionFactory.createConnection(connectionConfig)) {
+        try(Connection connection = ConnectionFactory.createConnection()) {
             UserDao userDao = AppConfiguration.getUserDao(connection);
             PostDao postDao = AppConfiguration.getPostDao(connection);
 
@@ -63,7 +50,24 @@ public class DbApp {
                 .build()
             );
 
-            posts.stream().map(postDao::create).forEach(System.out::println);
+            System.out.println("======>> Creation user with posts");
+            Long postId = posts.stream()
+                    .map(postDao::create)
+                    .map(Post::getId)
+                    .findAny()
+                    .get();
+
+            System.out.println("======>> Select post with id " + postId);
+            Post postById = postDao.read(postId);
+            System.out.println("Found " + postById);
+
+            System.out.println("======>> Updated post with id " + postId);
+            postById.setTitle("New title " + postId);
+            postById = postDao.update(postById);
+            System.out.println(postById);
+
+            System.out.println("======>> Select page from 10 posts");
+            postDao.read(1, 10).forEach(System.out::println);
         } catch (SQLException e) {
             e.printStackTrace();
         }
