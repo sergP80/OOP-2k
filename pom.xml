@@ -12,8 +12,8 @@
 
     <properties>
         <lombok.version>1.18.4</lombok.version>
-        <junit.version>5.3.2</junit.version>
-        <mockito.version>2.23.4</mockito.version>
+        <junit.version>5.7.2</junit.version>
+        <mockito.version>3.8.0</mockito.version>
         <logback.version>1.2.3</logback.version>
         <postgres.version>42.2.6</postgres.version>
         <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
@@ -49,6 +49,14 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
