@@ -1,9 +1,10 @@
 package ua.edu.chmnu.fks.oop.cipher;
 
-import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static ua.edu.chmnu.fks.oop.cipher.CesarCipher.encode;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ua.edu.chmnu.fks.oop.crypto.cipher.CesarCipher.encode;
 
 public class CesarCipherTest {
 

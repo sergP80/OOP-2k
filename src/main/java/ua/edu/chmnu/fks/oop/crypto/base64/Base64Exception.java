@@ -1,4 +1,4 @@
-package ua.edu.chmnu.fks.oop.base64;
+package ua.edu.chmnu.fks.oop.crypto.base64;
 
 public class Base64Exception extends RuntimeException {
     public Base64Exception() {

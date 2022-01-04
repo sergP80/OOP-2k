@@ -5,10 +5,22 @@
  */
 package ua.edu.chmnu.fks.oop.lb04;
 
-import org.junit.*;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import ua.edu.chmnu.fks.oop.arrays.ArrayUtils;
+
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  *
@@ -19,75 +31,54 @@ public class ArrayUtilsTest {
     public ArrayUtilsTest() {
     }
     
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
     }
     
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
     }
     
-    @Before
+    @BeforeEach
     public void setUp() {
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
     }
     
-    @Test
-    public void test01() {
-        double[] a = {-1, 2, 10, -11, 12};
-        double m = 12;
-        double r = ArrayUtils.maxAbs(a);
-        assertEquals(m, r, 1e-6);
+    @ParameterizedTest
+    @MethodSource("provideValidFixturesForMaxAbs")
+    public void shouldSuccessFindMaxValueByItsModule(double[] source, double expectedResult) {
+        assertEquals(expectedResult, ArrayUtils.maxAbs(source), 1e-6);
+    }
+    
+    static Stream<Arguments> provideValidFixturesForMaxAbs() {
+        return Stream.of(
+          Arguments.of(new double[]{-1, 2, 10, -11, 12}, 12),
+          Arguments.of(new double[]{-4, 5, 10, -15, 14}, -15)
+        );
     }
     
     @Test
-    public void test02() {
-        double[] a = {-1, 2, 10, -11, 12};
-        double m = 11;
-        double r = ArrayUtils.maxAbs(a);
-        assertNotEquals(m, r);
-    }
-    
-    @Test
-    public void test03() {
-        int[] a = {-4, 5, 10, -15, 14};
-        int m = -15;
-        int r = ArrayUtils.maxAbs(a);
-        assertEquals(m, r);
-    }
-    
-    @Test
-    public void test04() {
-        int[] a = {-4, 5, 10, -15, 14};
-        int m = 14;
-        int r = ArrayUtils.maxAbs(a);
-        assertNotEquals(m, r);
-    }
-    
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
-    public void test06() {
-        double[] a = new double[0];
-        double m = -11;
-        double r = ArrayUtils.maxAbs(a);
-        assertEquals(m, r);
+    public void shouldFailFindMaxByModuleWhenSourceIsEmpty() {
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> ArrayUtils.maxAbs(new double[0]));
     }
 
-    @Test
-    public void reverseArrayUtilTest01() {
-        int[] originalArray = {106,187,146,44,144,153,129,216,87,206,97,213,165};
-        int[] expectedReverseArray = {165,213,97,206,87,216,129,153,144,44,146,187,106};
-        ArrayUtils.reverse(originalArray);
-        Assert.assertArrayEquals(expectedReverseArray, originalArray);
+    @ParameterizedTest
+    @MethodSource("provideIntArrayFixturesForReverse")
+    public void shouldSuccessReverseIntArray(int[] source) {
+        int[] temp = new int[source.length];
+        System.arraycopy(source, 0, temp, 0, source.length);
+        ArrayUtils.reverse(temp);
+        ArrayUtils.reverse(temp);
+        assertArrayEquals(source, temp);
     }
-
-    @Test
-    public void reverseArrayUtilTest02() {
-        int[] originalArray = {-50,-1,25,-30,-7,-9,-37,30,-85,56,33,-102,-1,-122,3,-131,19,-8,-95,-116};
-        int[] expectedReverseArray = {-116,-95,-8,19,-131,3,-122,-1,-102,33,56,-85,30,-37,-9,-7,-30,25,-1,-50};
-        ArrayUtils.reverse(originalArray);
-        Assert.assertArrayEquals(expectedReverseArray, originalArray);
+    
+    static Stream<Arguments> provideIntArrayFixturesForReverse() {
+        return Stream.of(
+            Arguments.of(new int[]{106,187,146,44,144,153,129,216,87,206,97,213,165}),
+            Arguments.of(new int[]{-50,-1,25,-30,-7,-9,-37,30,-85,56,33,-102,-1,-122,3,-131,19,-8,-95,-116})
+        );
     }
 }

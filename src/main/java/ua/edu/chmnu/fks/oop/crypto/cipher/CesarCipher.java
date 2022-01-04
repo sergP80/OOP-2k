@@ -1,4 +1,4 @@
-package ua.edu.chmnu.fks.oop.cipher;
+package ua.edu.chmnu.fks.oop.crypto.cipher;
 
 public class CesarCipher {
     private static int ALPHA_LEN = 26;

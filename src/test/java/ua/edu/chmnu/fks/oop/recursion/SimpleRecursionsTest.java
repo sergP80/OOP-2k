@@ -1,17 +1,18 @@
 package ua.edu.chmnu.fks.oop.recursion;
 
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import ua.edu.chmnu.fks.oop.arrays.ArrayUtils;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.Stream;
 
-@RunWith(JUnitParamsRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class SimpleRecursionsTest {
     private static final int SMALL_ARRAY_SIZE = 1000;
 
@@ -19,50 +20,56 @@ public class SimpleRecursionsTest {
 
     private static Random rnd = new Random();
 
-    @Test
-    @Parameters({"-100, 100", "-200, 100", "-1000, 1000", "-5000, 3000", "-10000, 14000"})
-    public void successSumCalc(int lowValue, int highValue) {
+    @ParameterizedTest
+    @MethodSource("provideRangeFixtures")
+    public void shouldSuccessSumCalculation(int lowValue, int highValue) {
         int[] a = ArrayUtils.createArray(lowValue, highValue, SMALL_ARRAY_SIZE, rnd);
         long expectedSum = Arrays.stream(a).sum();
         long actualSum = SimpleRecursions.sum(a);
-        Assert.assertEquals(expectedSum, actualSum);
+        assertEquals(expectedSum, actualSum);
     }
-
-    @Test(expected = StackOverflowError.class)
-    @Parameters({"-100, 100", "-200, 100", "-1000, 1000", "-5000, 3000", "-10000, 14000"})
-    public void failWithStackOverflowSumCalc(int lowValue, int highValue) {
+    
+    @ParameterizedTest
+    @MethodSource("provideRangeFixtures")
+    public void shouldFailSumCalculationWithStackOverflow(int lowValue, int highValue) {
         int[] a = ArrayUtils.createArray(lowValue, highValue, LARGE_ARRAY_SIZE, rnd);
-        long expectedSum = Arrays.stream(a).sum();
-        long actualSum = SimpleRecursions.sum(a);
-        Assert.assertEquals(expectedSum, actualSum);
+        assertThrows(StackOverflowError.class, () -> SimpleRecursions.sum(a));
     }
-
-    @Test
-    @Parameters({"-100, 100", "-200, 100", "-1000, 1000", "-5000, 3000", "-10000, 14000"})
-    public void successSumWithTailRecursion(int lowValue, int highValue) {
+    
+    @ParameterizedTest
+    @MethodSource("provideRangeFixtures")
+    public void shouldSuccessSumCalculationWithTailRecursion(int lowValue, int highValue) {
         int[] a = ArrayUtils.createArray(lowValue, highValue, SMALL_ARRAY_SIZE, rnd);
         long expectedSum = Arrays.stream(a).sum();
         long actualSum = SimpleRecursions.sumTail(a);
-        Assert.assertEquals(expectedSum, actualSum);
+        assertEquals(expectedSum, actualSum);
     }
-
-    @Test(expected = StackOverflowError.class)
-    @Parameters({"-100, 100", "-200, 100", "-1000, 1000", "-5000, 3000", "-10000, 14000"})
-    public void failSumWithTailRecursionStackOverflow(int lowValue, int highValue) {
+    
+    @ParameterizedTest
+    @MethodSource("provideRangeFixtures")
+    public void shouldFailSumCalculationWithTailRecursion(int lowValue, int highValue) {
         int[] a = ArrayUtils.createArray(lowValue, highValue, LARGE_ARRAY_SIZE, rnd);
-        long expectedSum = Arrays.stream(a).sum();
-        long actualSum = SimpleRecursions.sumTail(a);
-        Assert.assertEquals(expectedSum, actualSum);
+       assertThrows(StackOverflowError.class, () -> SimpleRecursions.sumTail(a));
     }
-
-    @Test
-    @Parameters({"-100, 100", "-200, 100", "-1000, 1000", "-5000, 3000", "-10000, 14000"})
-    public void successBinarySearch(int lowValue, int highValue) {
+    
+    @ParameterizedTest
+    @MethodSource("provideRangeFixtures")
+    public void shouldSuccessBinarySearch(int lowValue, int highValue) {
         int[] a = ArrayUtils.createArray(lowValue, highValue, LARGE_ARRAY_SIZE, rnd);
         int key = a[rnd.nextInt(a.length)];
         Arrays.sort(a);
         int expectedIndex = Arrays.binarySearch(a, key);
         int actualIndex = SimpleRecursions.binarySearch(a, key);
-        Assert.assertEquals(expectedIndex, actualIndex);
+        assertEquals(expectedIndex, actualIndex);
+    }
+    
+    static Stream<Arguments> provideRangeFixtures() {
+        return Stream.of(
+            Arguments.of(-100, 100),
+            Arguments.of(-200, 100),
+            Arguments.of(-1000, 1000),
+            Arguments.of(-5000, 3000),
+            Arguments.of(-10000, 14000)
+        );
     }
 }

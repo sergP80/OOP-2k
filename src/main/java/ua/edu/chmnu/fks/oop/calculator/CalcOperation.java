@@ -5,13 +5,16 @@
  */
 package ua.edu.chmnu.fks.oop.calculator;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
 public enum CalcOperation {
     UNKNOWN(0), ADD(1), SUBS(1), MUL(2), DIV(2), MOD(2), POW(3);
     
-    private int priority;
+    private final int priority;
+    
+    CalcOperation(int priority) {
+        this.priority = priority;
+    }
+    
+    public int getPriority() {
+        return priority;
+    }
 }

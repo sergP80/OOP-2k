@@ -1,4 +1,4 @@
-package ua.edu.chmnu.fks.oop.base64;
+package ua.edu.chmnu.fks.oop.crypto.base64;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

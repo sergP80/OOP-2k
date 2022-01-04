@@ -1,27 +1,26 @@
 package ua.edu.chmnu.fks.oop.numbers;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(JUnitParamsRunner.class)
 public class NumberUtilsTest {
 
-    @Test
-    @Parameters({"342331", "213543252", "24553525", "3434325"})
-    public void testCountDigitsOfInt(String strNumber) {
+    @ParameterizedTest
+    @ValueSource(strings = {"342331", "213543252", "24553525", "3434325"})
+    public void shouldSuccessCountDigits(String strNumber) {
         int expectedDigits = strNumber.length();
         int number = Integer.parseInt(strNumber);
         int actualDigits = NumberUtils.countDigits(number);
         assertEquals(expectedDigits, actualDigits);
     }
-
-    @Test
-    @Parameters({"342333541", "9943882", "4587921", "435427294"})
-    public void testCountShiftDigitsOfInt(String strNumber) {
+    
+    @ParameterizedTest
+    @ValueSource(strings = {"342333541", "9943882", "4587921", "435427294"})
+    public void shouldSuccessCountOfDigitsWithShift(String strNumber) {
         int expectedDigits = strNumber.length();
         int number = Integer.parseInt(strNumber);
         int actualDigits = NumberUtils.countShiftDigits(number);
