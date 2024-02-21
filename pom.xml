@@ -15,7 +15,7 @@
         <junit.version>5.8.2</junit.version>
         <mockito.version>4.2.0</mockito.version>
         <logback.version>1.2.10</logback.version>
-        <postgres.version>42.3.1</postgres.version>
+        <postgres.version>42.7.2</postgres.version>
         <maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
         <maven.compiler.source.version>1.8</maven.compiler.source.version>
         <maven.compiler.target.version>1.8</maven.compiler.target.version>
